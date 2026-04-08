@@ -113,6 +113,11 @@ def main():
     submit_parser.add_argument("--code-file", type=str, required=True,
                                help="Path to the source code file")
 
+    # Sub-command for git submission
+    submit_git_parser = subparsers.add_parser("submit_git", help="Submit a git repository")
+    submit_git_parser.add_argument("--problem-id", type=int, required=True, help="Problem ID")
+    submit_git_parser.add_argument("--git-url", type=str, required=True, help="Git repository URL")
+
     # Sub-command for checking submission status
     status_parser = subparsers.add_parser("status", help="Check submission status")
     status_parser.add_argument("--submission-id", type=int, required=True, help="Submission ID")
@@ -142,6 +147,8 @@ def main():
 
         result = client.submit_code(args.problem_id, args.language, code_text)
 
+    elif args.command == "submit_git":
+        result = client.submit_git(args.problem_id, args.git_url)
     elif args.command == "status":
         result = client.get_submission_detail(args.submission_id)
     elif args.command == "abort":
